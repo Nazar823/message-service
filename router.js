@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {header, body, validationResult, oneOf} = require('express-validator')
+const {header, body, validationResult} = require('express-validator')
 const statusErr = {code: 400, description: 'Bad Request'}
 const {
     sendMessage, getChatList, getMessages, readMessage

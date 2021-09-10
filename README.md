@@ -14,3 +14,4 @@
 
 Подключение других сервисов
 * REGISTRATION = Link to registration service
+* GET_USERNAME = API link to check of existing user
