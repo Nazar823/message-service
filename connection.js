@@ -9,11 +9,9 @@ const sequelize = new Sequelize(
     }
 )
 
-const post = require('./models/post')(sequelize)
-const comment = require('./models/comment')(sequelize)
+const message = require('./models/message')(sequelize)
 
 module.exports = {
     sequelize: sequelize,
-    post: post,
-    comment: comment
+    message: message
 }

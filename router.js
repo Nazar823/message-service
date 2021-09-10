@@ -3,37 +3,26 @@ const router = express.Router()
 const {header, body, validationResult, oneOf} = require('express-validator')
 const statusErr = {code: 400, description: 'Bad Request'}
 const {
-    createComment, findCommentsByPost, deleteComment
-} = require('./controllers/commentController')
+    sendMessage, getChatList, getMessages, readMessage
+} = require('./controllers/messagesController')
 
-router.post('/api/createComment',
+router.post('/api/sendMessage',
     header('token', 'Token is not a JWT')
         .isJWT(),
     body('text', 'Text field is null!')
         .notEmpty(),
-    body('post', 'Post is not a numeric!')
+    body('receiver', 'Receiver is not a numeric!')
         .isNumeric(),
     function (req, res) {
         const e = validationResult(req)
         if (!e.isEmpty()){
             return res.status(statusErr.code).json({errors: e.array()})
         }
-        return createComment(req, res)
+        return sendMessage(req, res)
     })
 
-router.post('/api/findComments',
-    body('post', 'Post is not a numeric')
-        .isNumeric(),
-    function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
-        return findCommentsByPost(req, res)
-    })
-
-router.post('/api/deleteComment',
-    body('id', 'Id is not a numeric')
+router.post('/api/getMessages',
+    body('receiver', 'Receiver is not a numeric')
         .isNumeric(),
     header('token', 'Token is not a JWT')
         .isJWT(),
@@ -42,15 +31,22 @@ router.post('/api/deleteComment',
         if (!e.isEmpty()){
             return res.status(statusErr.code).json({errors: e.array()})
         }
-        return deleteComment(req, res)
+        return getMessages(req, res)
     })
 
-const {
-    createPost, deletePost, findPost, findAuthorPosts
-} =  require('./controllers/postController')
+router.post('/api/getChatList',
+    header('token', 'Token is not a JWT')
+        .isJWT(),
+    function (req, res) {
+        const e = validationResult(req)
+        if (!e.isEmpty()){
+            return res.status(statusErr.code).json({errors: e.array()})
+        }
+        return getChatList(req, res)
+    })
 
-router.post('/api/deletePost',
-    body('post', 'Post field not a numeric!')
+router.post('/api/readMessage',
+    body('id', 'id message field not a numeric!')
         .isNumeric(),
     header('token', 'Token field not a JWT!')
         .isJWT(),
@@ -59,48 +55,7 @@ router.post('/api/deletePost',
         if (!e.isEmpty()){
             return res.status(statusErr.code).json({errors: e.array()})
         }
-        return deletePost(req, res)
+        return readMessage(req, res)
     })
 
-router.post('/api/createPost',
-    body('title', 'Title field null!')
-        .notEmpty(),
-    header('token', 'Token field not is JWT!')
-        .isJWT(),
-    body('text', 'Text field null!')
-        .notEmpty(),
-    oneOf([
-        body('attachments', 'Attachments must be null or link')
-            .isURL(),
-        body('attachments', 'Attachments must be null or link')
-            .isEmpty()]),
-    function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
-        return createPost(req, res)
-    })
-
-router.post('/api/findPost',
-    body('post', 'Post field not a numeric!')
-        .isNumeric(),
-    function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
-        return findPost(req, res)
-    })
-
-router.post('/api/findAuthorPosts',
-    body('author', 'Author field not a numeric!')
-        .isNumeric(),
-    function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
-        return findAuthorPosts(req, res)
-    })
 module.exports = router

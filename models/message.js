@@ -1,35 +1,34 @@
 const Sequelize = require('sequelize')
 
 module.exports = function (sequelize){
-    let post = sequelize.define('post', {
+    return sequelize.define('message', {
         id: {
             type: Sequelize.INTEGER,
             autoIncrement: true,
             primaryKey: true,
             allowNull: false
         },
-        author: {
+        sender: {
             type: Sequelize.INTEGER,
             allowNull: false
         },
-        title: {
-            type: Sequelize.STRING,
+        receiver: {
+            type: Sequelize.INTEGER,
             allowNull: false
         },
         text: {
-            type: Sequelize.TEXT,
+            type: Sequelize.STRING,
             allowNull: false
-        },
-        attachments: {
-            type: Sequelize.TEXT,
-            allowNull: true
         },
         date_time: {
             type: Sequelize.DATE,
+            allowNull: false
+        },
+        read: {
+            type: Sequelize.BOOLEAN,
             allowNull: false
         }
     }, {
         timestamps: false
     })
-    return post
 }
