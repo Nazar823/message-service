@@ -11,9 +11,9 @@ module.exports.sendMessage = async (req, res) => {
         if (!sender) {
             return res.status(statusErr.code).json({message: 'You not authorized!'})
         }
-        const name2 = await getUserName(receiver)
-        console.log('NAME2', name2)
-        if (!name2){
+        const userName = await getUserName(receiver)
+        console.log('NAME2', userName)
+        if (!userName){
             return res.status(statusErr.code).json({message: 'This user not exists!'})
         }
         messageModel.create({
