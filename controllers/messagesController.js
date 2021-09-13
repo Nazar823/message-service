@@ -12,7 +12,6 @@ module.exports.sendMessage = async (req, res) => {
             return res.status(statusErr.code).json({message: 'You not authorized!'})
         }
         const userName = await getUserName(receiver)
-        console.log('NAME2', userName)
         if (!userName){
             return res.status(statusErr.code).json({message: 'This user not exists!'})
         }
@@ -49,7 +48,6 @@ module.exports.getMessages = async (req, res) => {
                 ]
             }
         })
-        console.log(findedMessages)
         if (findedMessages[0] === undefined){
             return res.status(statusErr.code).json({message: 'This chat haven\'t messages!'})
         }
@@ -97,7 +95,6 @@ module.exports.readMessage = async (req, res) => {
                 [Op.and]: [{id: id}, {receiver: sender}]
             }
         })
-        console.log(findedMessage)
         if (findedMessage[0] === 0){
             return res.status(statusErr.code).json({message: 'You can\'t read this message!'})
         }
@@ -106,15 +103,6 @@ module.exports.readMessage = async (req, res) => {
         console.log(e.message)
         return res.status(statusErr.code).json({message: e.message})
     }
-}
-
-async function existReceiver(receiver) {
-    const findedReceiver = await messageModel.findOne({
-        where: {
-            receiver: receiver
-        }
-    })
-    return findedReceiver === null
 }
 
 async function existChat(sender, receiver) {

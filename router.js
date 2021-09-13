@@ -13,11 +13,8 @@ router.post('/api/sendMessage',
         .notEmpty(),
     body('receiver', 'Receiver is not a numeric!')
         .isNumeric(),
+    middleCheckErrors,
     function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
         return sendMessage(req, res)
     })
 
@@ -26,22 +23,16 @@ router.post('/api/getMessages',
         .isNumeric(),
     header('token', 'Token is not a JWT')
         .isJWT(),
+    middleCheckErrors,
     function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
         return getMessages(req, res)
     })
 
 router.post('/api/getChatList',
     header('token', 'Token is not a JWT')
         .isJWT(),
+    middleCheckErrors,
     function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
         return getChatList(req, res)
     })
 
@@ -50,12 +41,17 @@ router.post('/api/readMessage',
         .isNumeric(),
     header('token', 'Token field not a JWT!')
         .isJWT(),
+    middleCheckErrors,
     function (req, res) {
-        const e = validationResult(req)
-        if (!e.isEmpty()){
-            return res.status(statusErr.code).json({errors: e.array()})
-        }
         return readMessage(req, res)
     })
+
+function middleCheckErrors(req, res, next){
+    const errors = validationResult(req)
+    if (!errors.isEmpty()){
+        return res.status(statusErr.code).json({errors: errors.array()})
+    }
+    next()
+}
 
 module.exports = router
