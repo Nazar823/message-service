@@ -6,7 +6,7 @@ const {
     sendMessage, getChatList, getMessages, readMessage
 } = require('./controllers/messagesController')
 
-router.post('/api/sendMessage',
+router.post('/api/message/sendMessage',
     header('token', 'Token is not a JWT')
         .isJWT(),
     body('text', 'Text field is null!')
@@ -18,7 +18,7 @@ router.post('/api/sendMessage',
         return sendMessage(req, res)
     })
 
-router.post('/api/getMessages',
+router.post('/api/message/getMessages',
     body('receiver', 'Receiver is not a numeric')
         .isNumeric(),
     header('token', 'Token is not a JWT')
@@ -28,7 +28,7 @@ router.post('/api/getMessages',
         return getMessages(req, res)
     })
 
-router.post('/api/getChatList',
+router.post('/api/message/getChatList',
     header('token', 'Token is not a JWT')
         .isJWT(),
     middleCheckErrors,
@@ -36,7 +36,7 @@ router.post('/api/getChatList',
         return getChatList(req, res)
     })
 
-router.post('/api/readMessage',
+router.post('/api/message/readMessage',
     body('id', 'id message field not a numeric!')
         .isNumeric(),
     header('token', 'Token field not a JWT!')
