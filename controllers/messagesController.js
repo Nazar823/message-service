@@ -120,7 +120,7 @@ async function existChat(sender, receiver) {
 }
 async function checkToken(token) {
     try {
-        const response = await axios.post(process.env.REGISTRATION, {}, {
+        const response = await axios.post(process.env.REGISTRATION_SERVICE + process.env.AUTHORIZATION, {}, {
                 headers: {authorization: token}
             }
         )
@@ -131,7 +131,7 @@ async function checkToken(token) {
 }
 async function getUserName(user) {
     try {
-        const response = await axios.post(process.env.GET_USERNAME, {user: user})
+        const response = await axios.post(process.env.REGISTRATION_SERVICE + process.env.GET_USERNAME, {user: user})
         if (response.status === 200){
             return response.data.name
         }
